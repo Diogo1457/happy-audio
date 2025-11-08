@@ -14,3 +14,4 @@ pip-wheel-metadata/
 .DS_Store
 *.log
 *.mp3
+*.mp4

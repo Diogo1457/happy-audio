@@ -1,6 +1,6 @@
-# 🎵 Music Accelerator CLI/GUI
+# 🎵 Music and Video Accelerator CLI/GUI
 
-**Make your music faster and happier with a simple command-line tool!**
+**Make your videos and audios faster and happier with a simple command-line tool!**
 
 ---
 
@@ -89,18 +89,54 @@ python main.py -a path/to/song.mp3 -s 1.25 -ps 2 -o output.mp3
 python main.py -y https://www.youtube.com/watch?v=hT_nvWreIhg -s 1.3 -ps 3
 ```
 
-| Flag | Description | Default |
-|------|-------------|---------|
-| `-a`, `--audio` | Path to a local audio file | — |
-| `-y`, `--youtube` | YouTube URL (audio only) | — |
-| `-o`, `--output` | Output file path | `output.mp3` |
-| `-s`, `--speed` | Speed multiplier | `1.25` |
-| `-ps`, `--pitch-shift` | Pitch shift in semitones | `+2` |
+Input Options (you must choose one)
+------------------------------------------------------------
+| Flag              | Description                               | Example                                         |
+|-------------------|-------------------------------------------|------------------------------------------------|
+| -f, --file        | Path to a local audio or video file.      | -f "song.mp3"                                  |
+| -y, --youtube     | YouTube URL to download and process.      | -y "https://www.youtube.com/watch?v=dQw4w9WgXcQ" |
+
+Processing Options
+------------------------------------------------------------
+| Flag              | Description                               | Default  |
+|-------------------|-------------------------------------------|-----------|
+| -v, --video       | Process as video instead of audio.        | False     |
+| --no-cache        | Disable caching (force re-download).      | False     |
+
+Audio/Video Effect Options
+------------------------------------------------------------
+| Flag              | Description                               | Default  |
+|-------------------|-------------------------------------------|-----------|
+| -s, --speed       | Speed multiplier (e.g., 1.25 = 25% faster). | 1.25    |
+| -p, --pitch-shift | Pitch shift in semitones (e.g., +2 = higher tone). | +2     |
+
+Output Options
+------------------------------------------------------------
+| Flag              | Description                               | Default  |
+|-------------------|-------------------------------------------|-----------|
+| -o, --output      | Output file path.                         | Auto (cache folder) |
+
+Examples
+------------------------------------------------------------
+```bash
+# Process a local MP3 file:
+
+python3 main.py -f "song.mp3" -s 1.3 -p 3
+
+# Download and process a YouTube video:
+python3 main.py -y "https://youtu.be/abcd1234" -v -s 1.2 -p 1
+
+# Force re-download, skipping cache:
+python3 main.py -y "https://youtu.be/abcd1234" --no-cache
+
+# Save to a custom output path:
+python3 main.py -f "track.wav" -o "happy_version.mp3" -s 1.5 -p 4
+```
 
 ## 😎 TODO
 
 - [x] Audio acceleration
-- [ ] Video acceleration
+- [x] Video acceleration
 - [ ] GUI (desktop interface)
 
 

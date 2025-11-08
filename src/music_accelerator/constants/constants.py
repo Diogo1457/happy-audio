@@ -1,1 +1,2 @@
 AUDIO_OUTPUT_DEFAULT = "output.mp3"
+VIDEO_OUTPUT_DEFAULT = "output.mp4"
