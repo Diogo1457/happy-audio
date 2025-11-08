@@ -2,7 +2,6 @@ import librosa
 import soundfile as sf
 import os
 
-
 def accelerate_music(input_path, output_path=None, speed=1.25, pitch_shift=2):
     """
     Makes a song sound faster and happier (tempo + pitch increase).

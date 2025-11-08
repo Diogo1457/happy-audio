@@ -1,6 +1,5 @@
 import yt_dlp
 import os
-import re
 
 def download_youtube_audio(url: str) -> str:
     """
@@ -10,12 +9,6 @@ def download_youtube_audio(url: str) -> str:
     :return: Path to downloaded audio file (MP3)
     :raises ValueError: if URL is not a valid YouTube link
     """
-    # Simple YouTube URL validation
-    youtube_regex = re.compile(
-        r'(https?://)?(www\.)?(youtube\.com|youtu\.be)/.+'
-    )
-    if not youtube_regex.match(url):
-        raise ValueError(f"Invalid YouTube URL: {url}")
 
     out_template = "youtube_audio.%(ext)s"
 
@@ -45,4 +38,3 @@ def download_youtube_audio(url: str) -> str:
         raise RuntimeError(f"Failed to download audio: {e}")
 
     return filename
-
