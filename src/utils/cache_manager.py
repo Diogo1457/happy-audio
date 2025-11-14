@@ -2,9 +2,11 @@ import os
 import json
 from collections import OrderedDict
 from utils.constants.constants import CONFIG_DIR, CACHE_DIR, CACHE_FILE, YOUTUBE_ID_REGEX
-from rich.console import Console
-
-console = Console()
+from music_accelerator.exceptions.cache_manager import (
+    CacheFileError,
+    CacheFileRemovalError,
+    InvalidYouTubeURLError
+)
 
 class CacheManager:
     """Manages cached YouTube downloads with a maximum of 2 entries using <video-id>-mp3/mp4."""
@@ -21,18 +23,21 @@ class CacheManager:
         try:
             with open(CACHE_FILE, "r") as f:
                 return json.load(f, object_pairs_hook=OrderedDict)
-        except (json.JSONDecodeError, FileNotFoundError):
-            return OrderedDict()
+        except (json.JSONDecodeError, FileNotFoundError) as e:
+            raise CacheFileError(f"Failed to read cache file: {e}")
 
     def _write_cache(self, data):
-        with open(CACHE_FILE, "w") as f:
-            json.dump(data, f, indent=2)
+        try:
+            with open(CACHE_FILE, "w") as f:
+                json.dump(data, f, indent=2)
+        except Exception as e:
+            raise CacheFileError(f"Failed to write cache file: {e}")
 
     @staticmethod
     def extract_video_id(url: str) -> str:
         match = YOUTUBE_ID_REGEX.search(url)
         if not match:
-            raise ValueError(f"Invalid YouTube video URL: {url}")
+            raise InvalidYouTubeURLError(f"Invalid YouTube video URL: {url}")
         return match.group(1)
 
     def get(self, video_id: str, video: bool) -> str:
@@ -70,7 +75,7 @@ class CacheManager:
                 try:
                     os.remove(oldest_path)
                 except Exception as e:
-                    console.print(f"[yellow]⚠️ Failed to remove file {oldest_path}: {e}[/yellow]")
+                    raise CacheFileRemovalError(f"Failed to remove cached file {oldest_path}: {e}")
 
         self._write_cache(cache)
         self.clean_cache()
